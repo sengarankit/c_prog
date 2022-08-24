@@ -1,0 +1,134 @@
+
+
+/* Two stacks in an array */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct _Stack{
+    int *arr;
+    int top1;
+    int top2;
+    int capacity;
+}stack;
+
+stack* createStack (stack *s, int capacity){
+    s = (stack *) malloc(sizeof(stack));
+    if (!s){
+        printf("Stack creation failed.. not sufficient memory available\n");
+        return NULL;
+    }
+    
+    s->arr = (int *)malloc(capacity*sizeof(int));
+    if (!s->arr){
+        printf("Stack creation failed.. not sufficient memory available\n");
+        return NULL;
+    }
+    
+    s->top1 = -1;
+    s->top2 = capacity;
+    s->capacity = capacity;
+    
+}
+
+int isFull(stack *s){
+    return (s->top1 == s->top2 -1);
+}
+
+int isEmpty1(stack *s){
+    
+    if (s->top1 < 0){
+        return 1;
+    }
+    return 0;
+    
+}
+
+int isEmpty2(stack *s){
+    if (s->top2 == s->capacity){
+        return 1;
+    }
+    
+    return 0;
+}
+
+void push1(stack *s, int data){
+    if (isFull(s)){
+        printf("Stack overflow ..\n");
+        return;
+    }
+    
+    s->arr[++s->top1] = data;
+}
+
+void push2(stack *s, int data){
+    if (isFull(s)){
+        printf("Stack overflow ..\n");
+        return;
+    }
+    
+    s->arr[--s->top2] = data;
+}
+
+int pop1(stack *s){
+    
+    if (isEmpty1(s)){
+        printf("Stack underflow ..\n");
+        return -1;
+    }
+    
+    int data = s->arr[s->top1--];
+    return data;
+}
+
+int pop2(stack *s){
+    
+    if (isEmpty2(s)){
+        printf("Stack underflow ..\n");
+        return -1;
+    }
+    
+    int data = s->arr[s->top2++];
+    return data;
+}
+
+int main()
+{
+    stack *s = createStack(s, 5);
+    push1(s, 3);
+    push2(s, 5);
+    push2(s, 1);
+    push1(s, 4);
+    push2(s, 2);
+    push1(s, 6);
+
+    int data =-1;
+
+    data = pop1(s);
+    printf("Stack1 popped data: %d\n", data);
+    
+    data = pop1(s);
+    printf("Stack1 popped data: %d\n", data);
+    
+    data = pop2(s);
+    printf("Stack2 popped data: %d\n", data);
+    
+    data = pop2(s);
+    printf("Stack2 popped data: %d\n", data);
+    
+    data = pop2(s);
+    printf("Stack2 popped data: %d\n", data);
+   
+    data = pop1(s);
+    if (data < 0){
+        return 0;
+    }
+    
+    data = pop2(s);
+    if (data < 0){
+        return 0;
+    }
+    printf("Stack popped data: %d\n", data);
+    
+    return 0;
+}
