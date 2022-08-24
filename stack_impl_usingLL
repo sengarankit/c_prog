@@ -1,0 +1,84 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct _Stack{
+    int data;
+    struct _Stack *next;
+}stack;
+
+void createStack (stack **s, int data){
+    stack *newNode = NULL;
+    newNode = (stack *)malloc (sizeof(stack));
+    if (!newNode){
+        printf("Stack overflow ..\n");
+        return;
+    }
+    
+    newNode->data = data;
+    
+    if (*s != NULL){
+        newNode->next = *s;
+    } else {
+        newNode->next = NULL;
+    }
+    
+    *s = newNode;;
+}
+
+
+void push(stack **s, int data){
+    createStack(s,data);
+}
+
+int pop(stack **s){
+    
+    if (*s == NULL){
+        printf("Stack underflow ..\n");
+        return -1;
+    }
+    
+    int data = (*s)->data;
+    stack *temp = (*s)->next;
+    free(*s);
+    *s = temp;
+    return data;
+}
+
+
+int main()
+{
+    stack *s = NULL;
+    
+    push(&s, 3);
+    push(&s, 5);
+    push(&s, 1);
+    push(&s, 4);
+    push(&s, 2);
+
+    int top = -1;
+    int data =-1;
+
+    data = pop(&s);
+    printf("Stack popped data: %d\n", data);
+    
+    data = pop(&s);
+    printf("Stack popped data: %d\n", data);
+    
+    data = pop(&s);
+    printf("Stack popped data: %d\n", data);
+    
+    data = pop(&s);
+    printf("Stack popped data: %d\n", data);
+    
+    data = pop(&s);
+    printf("Stack popped data: %d\n", data);
+   
+    data = pop(&s);
+    if (data < 0){
+        return 0;
+    }
+    printf("Stack popped data: %d\n", data);
+    
+    return 0;
+}
